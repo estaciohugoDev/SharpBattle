@@ -1,0 +1,51 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.30621.155
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SharpBattle", "SharpBattle.csproj", "{357B82DD-E66A-4BFE-A058-28147A9C4EA2}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Entities", "Entities", "{653E0A93-FA3A-4507-A5C9-8CDAA950A3E1}"
+	ProjectSection(SolutionItems) = preProject
+		battle.cs = battle.cs
+		run.cs = run.cs
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Enemy", "Enemy", "{8FF4F339-A81E-4312-BFE0-947521D37D96}"
+	ProjectSection(SolutionItems) = preProject
+		enemy.cs = enemy.cs
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Player", "Player", "{7D8B1C5A-5E98-446E-8A4F-09D6F4E8377D}"
+	ProjectSection(SolutionItems) = preProject
+		player.cs = player.cs
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Enums", "Enums", "{ECE7D733-7115-4503-AA22-882F18418E88}"
+	ProjectSection(SolutionItems) = preProject
+		fighterStances.cs = fighterStances.cs
+	EndProjectSection
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{357B82DD-E66A-4BFE-A058-28147A9C4EA2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{357B82DD-E66A-4BFE-A058-28147A9C4EA2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{357B82DD-E66A-4BFE-A058-28147A9C4EA2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{357B82DD-E66A-4BFE-A058-28147A9C4EA2}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{8FF4F339-A81E-4312-BFE0-947521D37D96} = {653E0A93-FA3A-4507-A5C9-8CDAA950A3E1}
+		{7D8B1C5A-5E98-446E-8A4F-09D6F4E8377D} = {653E0A93-FA3A-4507-A5C9-8CDAA950A3E1}
+		{ECE7D733-7115-4503-AA22-882F18418E88} = {653E0A93-FA3A-4507-A5C9-8CDAA950A3E1}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {26C75B2B-DDCF-4C3B-B509-BD13B470B316}
+	EndGlobalSection
+EndGlobal
