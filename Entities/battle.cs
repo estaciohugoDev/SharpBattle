@@ -1,10 +1,12 @@
-﻿namespace SharpBattle.Battle
+﻿using SharpBattle.Entities;
+
+namespace SharpBattle
 {
     class Battle
     {
         public static void Main(string[] args)
         {
-            var player = new Player.Player();
+            var player = new Player();
             //Instance running class
             var runProgram = new Run();
 

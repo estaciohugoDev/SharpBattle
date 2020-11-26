@@ -1,9 +1,10 @@
 ﻿using System;
 using SharpBattle.Entities.Enums;
+using SharpBattle.Entities;
 
-namespace SharpBattle.Player
+namespace SharpBattle
 {
-    public class Player
+    public class Player 
     {
         private static string _name;
         public double Health = 50.00;
@@ -37,7 +38,7 @@ namespace SharpBattle.Player
 
         // ---------------- METHODS ---------------
 
-        public void NextAction(Enemy.Enemy enemy)
+        public void NextAction(Enemy enemy)
         {
             while (IsTurn)
             {
@@ -105,11 +106,11 @@ namespace SharpBattle.Player
             Console.Clear();
         }
 
-        private double Attack(Enemy.Enemy enemy)
+        private double Attack(Enemy enemy)
         {
             var rnd = new Random();
             Damage = rnd.Next(5, 40);
-            enemy.Health -= Damage;
+            enemy.Health -= Damage; 
             Console.WriteLine($"{Name} attacks {enemy.Name} causing {Damage} damage!");
             if (enemy.Health <= 0)
             {
@@ -152,7 +153,7 @@ namespace SharpBattle.Player
             }
         }
 
-        private void Scan(Enemy.Enemy enemy)
+        private void Scan(Enemy enemy)
         {
             Console.WriteLine($"{Name} scans {enemy.Name}!");
             Console.WriteLine(enemy.EnemyInfo());

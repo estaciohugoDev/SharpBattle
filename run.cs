@@ -1,12 +1,13 @@
 ﻿using System;
 using System.Threading;
+using SharpBattle.Entities;
 
-namespace SharpBattle 
+namespace SharpBattle
 {
     public class Run
     {
         public Run() { }
-        public void Start(Player.Player player)
+        public void Start(Player player)
         {
             Console.WriteLine(WelcomeBattle()); 
             //Create character, class system TBI
@@ -17,10 +18,9 @@ namespace SharpBattle
             //Get enemy from list
             EnemyFound(player, enemy);
             FightLoop(player, enemy); 
-            System.Console.WriteLine("Test after fightloop");
         }
 
-        private void FightLoop(Player.Player player, Enemy.Enemy enemy)
+        private void FightLoop(Player player, Enemy enemy)
         {
             var x = 0;
             while (x == 0) //while(player.Health > 0 && enemy.Health > 0)
@@ -48,12 +48,11 @@ namespace SharpBattle
                     FightLoop(player, enemy);
                 }
             }
-            System.Console.WriteLine("Fight over!");
             return;
         }
-        private Enemy.Enemy NewEnemy()
+        private Enemy NewEnemy()
         {
-            var enemy = new Enemy.Enemy();
+            var enemy = new Enemy();
 
             return enemy;
         }
@@ -61,7 +60,7 @@ namespace SharpBattle
         {
             return "---------- SHARPBATTLE ----------";
         }
-        private string EnemyFound(Player.Player player, Enemy.Enemy enemy)
+        private string EnemyFound(Player player, Enemy enemy)
         {
             return $"{player.Name} finds a {enemy.Name}, BATTLE START!";
         }

@@ -1,30 +1,25 @@
 ﻿using System;
 using System.Threading.Channels;
+using SharpBattle.Entities;
 
-namespace SharpBattle.Enemy
+namespace SharpBattle
 {
     public class Enemy
     {
         public readonly string Name;
-        public double Health = 10.00;
+        public double Health = 10.00; 
         private double Damage { get; set; }
-
         public bool IsTurn;
 
         public Enemy()
         {
-            string[] enemList = { "Larryzito alts", "Furry", "Antifa", "Dannygurr", "Fake Viewer", "La creatura", "POP Monster" };
+            string[] enemList = { "Thief", "Furry", "Communist", "Slime", "Skeleton swordsman", "Wolf", "Cave Troll" };
             Random rand = new Random();
             int randName = rand.Next(enemList.Length);
             Name = enemList[randName];
         }
 
-        public Enemy(string name)
-        {
-            Name = name;
-        }
-
-        public void EnemyAction(Player.Player player)
+        public void EnemyAction(Player player)
         {
             var action = 1;
             //Action is attack by default since rest TBI
@@ -47,7 +42,7 @@ namespace SharpBattle.Enemy
             }
         }
 
-        private double EnemyAttack(Player.Player player)
+        private double EnemyAttack(Player player)
         {
             if (player.Health <= 0)
             {
@@ -65,7 +60,7 @@ namespace SharpBattle.Enemy
         public string EnemyInfo()
         {
             return "\n - - - - - - - - - - - - - - - - - - -\n" +
-            $"           ENEMY INFO \n\nName: {Name}\nHP: {Health:F2}"
+            $"           Enemy INFO \n\nName: {Name}\nHP: {Health:F2}"
             + "\n - - - - - - - - - - - - - - - - - - -\n";
         }
     }
