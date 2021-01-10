@@ -7,8 +7,11 @@ namespace SharpBattle
     public class Enemy
     {
         public readonly string Name;
-        public double Health = 10.00; 
-        private double Damage { get; set; }
+        public double HP = 10.00; 
+        private double DMG { get; set; }
+        private double DEF { get; set; }
+        private double MAG { get; set; }
+        private double HLY { get; set; }
         public bool IsTurn;
 
         public Enemy()
@@ -19,12 +22,14 @@ namespace SharpBattle
             Name = enemList[randName];
         }
 
+        // ---------------- METHODS ---------------
+
         public void EnemyAction(Player player)
         {
             var action = 1;
             //Action is attack by default since rest TBI
 
-            if (!(Health > 0))
+            if (!(HP > 0))
             {
                 Console.WriteLine($"{player.Name} beat {Name}!");
                 return;
@@ -44,23 +49,32 @@ namespace SharpBattle
 
         private double EnemyAttack(Player player)
         {
-            if (player.Health <= 0)
+            if (player.HP <= 0)
             {
                 Console.WriteLine($"{Name} beat {player.Name}!");
                 return 0;
             }
 
             var rnd = new Random();
-            Damage = rnd.Next(2, 20);
-            player.Health -= Damage;
-            Console.WriteLine($"{Name} attacks {player.Name} causing {Damage} damage!");
-            return Damage;
+            DMG = rnd.Next(2, 20);
+            player.HP -= DMG;
+            Console.WriteLine($"{Name} attacks {player.Name} causing {DMG} damage!");
+            return DMG;
         }
+        public string EnemyFound(Player player, Enemy enemy)
+        {
+            return $"{player.Name} finds a {enemy.Name}, BATTLE START!";
+        }
+        public static Enemy NewEnemy()
+        {
+            var enemy = new Enemy();
 
+            return enemy;
+        }
         public string EnemyInfo()
         {
             return "\n - - - - - - - - - - - - - - - - - - -\n" +
-            $"           Enemy INFO \n\nName: {Name}\nHP: {Health:F2}"
+            $"           Enemy INFO \n\nName: {Name}\nHP: {HP:F2}"
             + "\n - - - - - - - - - - - - - - - - - - -\n";
         }
     }

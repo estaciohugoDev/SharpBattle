@@ -4,65 +4,80 @@ using SharpBattle.Entities;
 
 namespace SharpBattle
 {
-    public class Run
+    public static class Run
     {
-        public Run() { }
-        public void Start(Player player)
+        public static void Start(Player player)
         {
-            Console.WriteLine(WelcomeBattle()); 
+            Console.WriteLine(WelcomeBattle());
             //Create character, class system TBI
 
-            player.CreatePlayer();
-            var enemy = NewEnemy(); 
+            //player.CreatePlayer();
+            var enemy = Enemy.NewEnemy(); 
 
             //Get enemy from list
-            EnemyFound(player, enemy);
+            enemy.EnemyFound(player, enemy);
             FightLoop(player, enemy); 
         }
 
-        private void FightLoop(Player player, Enemy enemy)
+        // ---------------- METHODS ---------------
+
+        private static void FightLoop(Player player, Enemy enemy)
         {
             var x = 0;
-            while (x == 0) //while(player.Health > 0 && enemy.Health > 0)
+            while (x == 0) //while(player.HP > 0 && enemy.HP > 0)
             {
                 //Wait for player input
-                if (player.Health > 0)
+                if (player.HP > 0)
                     player.NextAction(enemy);
                 else
                 {
                     System.Console.WriteLine($"{player.Name} DIED! - GAME OVER");
+                    GameOverScreen();
                     break;
                 }
                 //Get randomized enemy action
-                if (enemy.Health > 0)
-                {
+                if (enemy.HP > 0)
                     enemy.EnemyAction(player);
-                }
+                
                 else
                 {
                     System.Console.WriteLine("---- HERE COMES A NEW CHALLENGER ----");
                     player.IsTurn = true;
                     x = 1;
-                    enemy = NewEnemy();
-                    Console.WriteLine(EnemyFound(player, enemy));
+                    enemy = Enemy.NewEnemy();
+                    Console.WriteLine(enemy.EnemyFound(player, enemy));
                     FightLoop(player, enemy);
                 }
             }
             return;
         }
-        private Enemy NewEnemy()
-        {
-            var enemy = new Enemy();
-
-            return enemy;
-        }
+        
         public static string WelcomeBattle()
         {
+            Console.Clear();
             return "---------- SHARPBATTLE ----------";
         }
-        private string EnemyFound(Player player, Enemy enemy)
+        public static void GameOverScreen()
         {
-            return $"{player.Name} finds a {enemy.Name}, BATTLE START!";
+            System.Console.WriteLine("----- > Would you like to continue?\n----> Yes(Y).\n---> No.(N)");
+            char choice = char.Parse(Console.ReadLine());
+            Console.Clear();
+            
+            switch (choice)
+            {
+                case 'Y':
+                    var player = new Player();
+                    Run.Start(player);
+                    break;
+
+                case 'N':
+                    return;
+                
+                default:
+                    System.Console.WriteLine("Please type Y or N ONLY!");
+                    GameOverScreen();
+                    break;
+            }
         }
         public static void Wait()
         {
