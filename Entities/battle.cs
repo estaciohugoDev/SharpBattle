@@ -1,4 +1,5 @@
 ﻿using SharpBattle.Entities;
+using SharpBattle.Util;
 
 namespace SharpBattle
 {
@@ -6,9 +7,8 @@ namespace SharpBattle
     {
         public static void Main(string[] args)
         {
-            var player = new Player();
-            //Start the running class. 
-            Run.Start(player);
+            //Starts the game. 
+            Utilities.MainMenuPrompt();
         }
     }
 }

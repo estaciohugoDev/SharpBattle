@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Threading;
 using SharpBattle.Entities;
+using SharpBattle.Util;
 
 namespace SharpBattle
 {
@@ -8,15 +9,13 @@ namespace SharpBattle
     {
         public static void Start(Player player)
         {
-            Console.WriteLine(WelcomeBattle());
-            //Create character, class system TBI
+            Console.WriteLine(Utilities.WelcomeBattle());
 
-            //player.CreatePlayer();
-            var enemy = Enemy.NewEnemy(); 
+            var enemy = Enemy.NewEnemy();
 
             //Get enemy from list
             enemy.EnemyFound(player, enemy);
-            FightLoop(player, enemy); 
+            FightLoop(player, enemy);
         }
 
         // ---------------- METHODS ---------------
@@ -32,60 +31,30 @@ namespace SharpBattle
                 else
                 {
                     System.Console.WriteLine($"{player.Name} DIED! - GAME OVER");
-                    GameOverScreen();
+                    Utilities.GameOverScreen();
                     break;
                 }
                 //Get randomized enemy action
                 if (enemy.HP > 0)
                     enemy.EnemyAction(player);
-                
+
                 else
                 {
+                    if (SaveLoadFiles.SaveGamePrompt())
+                        SaveLoadFiles.SaveGame(player);
+
                     System.Console.WriteLine("---- HERE COMES A NEW CHALLENGER ----");
                     player.IsTurn = true;
                     x = 1;
                     enemy = Enemy.NewEnemy();
                     Console.WriteLine(enemy.EnemyFound(player, enemy));
+                    Console.WriteLine(enemy.EnemyInfo());
+                    Utilities.Wait();
                     FightLoop(player, enemy);
                 }
             }
             return;
         }
-        
-        public static string WelcomeBattle()
-        {
-            Console.Clear();
-            return "---------- SHARPBATTLE ----------";
-        }
-        public static void GameOverScreen()
-        {
-            System.Console.WriteLine("----- > Would you like to continue?\n----> Yes(Y).\n---> No.(N)");
-            char choice = char.Parse(Console.ReadLine());
-            Console.Clear();
-            
-            switch (choice)
-            {
-                case 'Y':
-                    var player = new Player();
-                    Run.Start(player);
-                    break;
 
-                case 'N':
-                    return;
-                
-                default:
-                    System.Console.WriteLine("Please type Y or N ONLY!");
-                    GameOverScreen();
-                    break;
-            }
-        }
-        public static void Wait()
-        {
-            for (var i = 0; i <= 5; i++)
-            {
-                Console.Write(".");
-                Thread.Sleep(500);
-            }
-        }
     }
 }

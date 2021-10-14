@@ -12,7 +12,7 @@ namespace SharpBattle
         protected double _mag = 4.0;
         protected double _hly = 2.0;
         protected double _lck = 1.0;
-
+ 
         public BaseClass(){}
 
         public double HP
@@ -44,6 +44,12 @@ namespace SharpBattle
         {
             get => _lck;
             set{_lck = value;}
+        }
+
+        public double MANA
+        {
+            get => MAG * 2;
+            set{MANA = value;}
         }
 
         public static string ClassName(BaseClass _class)

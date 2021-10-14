@@ -1,13 +1,14 @@
 ﻿using System;
 using System.Threading.Channels;
 using SharpBattle.Entities;
+using SharpBattle.Util;
 
 namespace SharpBattle
 {
     public class Enemy
     {
         public readonly string Name;
-        public double HP = 10.00; 
+        public double HP = 10.00;
         private double DMG { get; set; }
         private double DEF { get; set; }
         private double MAG { get; set; }
@@ -39,7 +40,7 @@ namespace SharpBattle
             {
                 case 1:
                     EnemyAttack(player);
-                    Run.Wait();
+                    Utilities.Wait();
                     Console.Clear();
                     IsTurn = false;
                     player.IsTurn = true;

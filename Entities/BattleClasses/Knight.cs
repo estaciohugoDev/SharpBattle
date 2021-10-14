@@ -10,12 +10,13 @@ namespace SharpBattle
         static Knight KnightClass{get => GetKnightBuffer();}
         public Knight() : base()
         { 
-            HP      = 30.00;
-            DMG     *= 0.2;
-            DEF     = 10.00;
-            MAG     = 2.0;
-            HLY     = 4.0;
-            LCK     = 6.0;
+            HP          = 30.00;
+            DMG         *= 0.2;
+            DEF         = 10.00;
+            MAG         = 2.0;
+            HLY         = 4.0;
+            LCK         = 6.0;
+            //MANA        = 4.0 * MAG;
         }
 //        <-------CLASS SKILLS--------->
         public static double CrossSlash(Player player, Enemy enemy)

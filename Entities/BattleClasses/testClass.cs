@@ -1,10 +1,11 @@
 using System;
 using System.Collections.Generic;
 using SharpBattle.Entities;
+using SharpBattle.Util;
 
 namespace SharpBattle
 {
-    public static class TestClass 
+    public static class TestClass
     {
         public static double _hp = 20.00;
         public static double _dmg = 10.00;
@@ -13,7 +14,7 @@ namespace SharpBattle
         public static double _hly = 2.0;
         public static double _lck = 1.5;
 
-        static TestClass(){}
+        static TestClass() { }
 
         public static void SelectClass(Player player)
         {
@@ -30,19 +31,19 @@ namespace SharpBattle
                     System.Console.WriteLine($"{player.Name} is now a Knight!");
                     player.Class = new Knight();
                     break;
-                    //return chosenClass;
+                //return chosenClass;
                 default:
                     System.Console.WriteLine("Not implemented.");
-                    Run.Wait();
+                    Utilities.Wait();
                     break;
                     //return SelectClass(player);
-                   
+
             }
         }
 
         public static Object GetPlayerClass(Player player)
         {
-            if(player.Class.GetType().Name == "Knight")
+            if (player.Class.GetType().Name == "Knight")
             {
                 Knight knightVar = new Knight();
                 return knightVar;
