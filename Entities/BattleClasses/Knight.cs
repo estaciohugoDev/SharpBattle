@@ -6,25 +6,25 @@ using SharpBattle.Entities;
 namespace SharpBattle
 {
     class Knight : BaseClass
-    { 
-        static Knight KnightClass{get => GetKnightBuffer();}
+    {
+        static Knight KnightClass { get => GetKnightBuffer(); }
         public Knight() : base()
-        { 
-            HP          = 30.00;
-            DMG         *= 0.2;
-            DEF         = 10.00;
-            MAG         = 2.0;
-            HLY         = 4.0;
-            LCK         = 6.0;
+        {
+            HP = 30.00;
+            DMG *= 1.2;
+            DEF += 10.00;
+            MAG = 2.0;
+            HLY = 4.0;
+            LCK = 6.0;
             //MANA        = 4.0 * MAG;
         }
-//        <-------CLASS SKILLS--------->
+        #region CLASS SKILLS
         public static double CrossSlash(Player player, Enemy enemy)
         {
-            
+
             Random rnd = new Random();
             double skillDamage = GetKnightBuffer().DMG;
-            skillDamage += rnd.Next(10,50);
+            skillDamage += rnd.Next(10, 50);
             enemy.HP -= skillDamage;
             System.Console.WriteLine($"{player.Name} casts Cross Slash, {enemy.Name} receives {skillDamage} damage!");
             if (enemy.HP <= 0)
@@ -34,8 +34,9 @@ namespace SharpBattle
             }
             return skillDamage;
         }
+        #endregion CLASS SKILLS
 
-//        <-------AUXILIARY METHODS--------->
+        #region AUXILIARY METHODS
         public void ListSkills()
         {
             Console.Clear();
@@ -50,33 +51,34 @@ namespace SharpBattle
             System.Console.WriteLine("Choose a skill: ");
             short choice = short.Parse(Console.ReadLine());
 
-            switch(choice)
+            switch (choice)
             {
                 case 1:
-                    Knight.CrossSlash(player,enemy);
+                    Knight.CrossSlash(player, enemy);
                     break;
 
-                default :
-                System.Console.WriteLine("Invalid option, going back.");
-                player.NextAction(enemy);
-                    break; 
+                default:
+                    System.Console.WriteLine("Invalid option, going back.");
+                    player.NextAction(enemy);
+                    break;
             }
         }
         public static void OverridePlayerStats(Player player)
         {
             var knight = new Knight();
 
-            player.HP   = knight.HP;
-            player.DMG  = knight.DMG;
-            player.DEF  = knight.DEF;
-            player.MAG  = knight.MAG;
-            player.HLY  = knight.HLY;
-            player.LCK  = knight.LCK;
+            player.HP = knight.HP;
+            player.DMG = knight.DMG;
+            player.DEF = knight.DEF;
+            player.MAG = knight.MAG;
+            player.HLY = knight.HLY;
+            player.LCK = knight.LCK;
         }
         public static Knight GetKnightBuffer()
         {
             Knight knight = new Knight();
             return knight;
-        }    
+        }
+        #endregion AUXILIARY METHODS
     }
 }

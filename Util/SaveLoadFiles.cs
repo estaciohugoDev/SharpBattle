@@ -10,12 +10,12 @@ namespace SharpBattle
 {
     public static class SaveLoadFiles
     {
-        private static string FileName = $"{Player.PlayerName}.txt";
-        private static FileInfo fi = new FileInfo(FileName);
-        private static string projectPath = Directory.GetCurrentDirectory().ToString();
-        private static string folderName = Path.Combine(projectPath, "SaveData");
+        private static readonly string FileName = $"{Player.PlayerName}.txt";
+        private static readonly FileInfo fi = new FileInfo(FileName);
+        private static readonly string projectPath = Directory.GetCurrentDirectory().ToString();
+        private static readonly string folderName = Path.Combine(projectPath, "SaveData");
 
-        //<SAVE GAME>//
+        #region SAVE GAME
         public static void SaveGame(Player playerData)
         {
             if (!IsFolderCreated())
@@ -73,11 +73,13 @@ namespace SharpBattle
             Console.Clear();
             return save;
         }
-        //</SAVE GAME>//
+        #endregion SAVE GAME
 
-        //<LOAD GAME>//
+        #region LOAD GAME 
         //public static void LoadGame()
-        //</LOAD GAME>//
+        #endregion LOAD GAME 
+
+        #region AUXILIARY METHODS
         public static void CreateFolder()
         {
             try
@@ -104,18 +106,19 @@ namespace SharpBattle
 
             foreach (string file in files)
             {
-                System.Console.WriteLine($"{counter + 1} - {files[counter].ToString()}");
+                System.Console.WriteLine($"{counter + 1} - {files[counter]}");
                 counter++;
             }
         }
         private static Boolean IsFolderCreated()
         {
-            return Directory.Exists("SaveData") ? true : false;
+            return Directory.Exists("SaveData");
         }
         private static Boolean CheckForFile()
         {
-            return File.Exists(FileName) ? true : false;
+            return File.Exists(FileName);
         }
+        #endregion AUXILIARY METHODS
 
     }
 }

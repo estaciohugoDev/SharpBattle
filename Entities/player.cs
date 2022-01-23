@@ -10,7 +10,7 @@ namespace SharpBattle
     {
         public static string PlayerName;
         public BaseClass PlayerClass;
-        private Stances fightingStances { get; set; }
+        private Stances FightingStances { get; set; }
         public bool IsTurn = true;
 
         public Player() { CreatePlayer(); }
@@ -163,15 +163,15 @@ namespace SharpBattle
                 switch (choice)
                 {
                     case 1:
-                        this.fightingStances = (Stances)choice;
+                        this.FightingStances = (Stances)choice;
                         this.DMG += 10;
-                        Console.WriteLine($"{this.Name} changed stance to: {this.fightingStances}");
+                        Console.WriteLine($"{this.Name} changed stance to: {this.FightingStances}");
                         break;
 
                     case 2:
-                        this.fightingStances = (Stances)choice;
+                        this.FightingStances = (Stances)choice;
                         this.HP += 20;
-                        Console.WriteLine($"{this.Name} changed stance to: {this.fightingStances}");
+                        Console.WriteLine($"{this.Name} changed stance to: {this.FightingStances}");
                         break;
 
                     default:
@@ -230,15 +230,17 @@ namespace SharpBattle
 
         public static List<string> CondensedPlayerInfo(Player player)
         {
-            List<string> playerInfo = new List<string>();
-            playerInfo.Add(player.Name);
-            playerInfo.Add(player.Class.GetType().Name);
-            playerInfo.Add(player.HP.ToString());
-            playerInfo.Add(player.DMG.ToString());
-            playerInfo.Add(player.DEF.ToString());
-            playerInfo.Add(player.MAG.ToString());
-            playerInfo.Add(player.HLY.ToString());
-            playerInfo.Add(player.LCK.ToString());
+            List<string> playerInfo = new List<string>
+            {
+                player.Name,
+                player.Class.GetType().Name,
+                player.HP.ToString(),
+                player.DMG.ToString(),
+                player.DEF.ToString(),
+                player.MAG.ToString(),
+                player.HLY.ToString(),
+                player.LCK.ToString()
+            };
 
             return playerInfo;
         }

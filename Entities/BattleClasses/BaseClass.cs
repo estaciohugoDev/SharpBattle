@@ -4,7 +4,7 @@ using SharpBattle.Entities;
 
 namespace SharpBattle
 {
-    public class BaseClass 
+    public class BaseClass
     {
         protected double _hp = 20.00;
         protected double _dmg = 10.00;
@@ -12,49 +12,53 @@ namespace SharpBattle
         protected double _mag = 4.0;
         protected double _hly = 2.0;
         protected double _lck = 1.0;
- 
-        public BaseClass(){}
+
+        #region GET/SET PROPERTIES
+        public BaseClass() { }
 
         public double HP
         {
             get => _hp;
-            set{_hp = value;}
+            set { _hp = value; }
         }
         public double DMG
         {
             get => _dmg;
-            set{_dmg = value;}
+            set { _dmg = value; }
         }
         public double DEF
         {
             get => _def;
-            set{_def = value;}
+            set { _def = value; }
         }
         public double MAG
         {
             get => _mag;
-            set{_mag = value;}
+            set { _mag = value; }
         }
         public double HLY
         {
             get => _hly;
-            set{_hly = value;}
+            set { _hly = value; }
         }
         public double LCK
         {
             get => _lck;
-            set{_lck = value;}
+            set { _lck = value; }
         }
 
         public double MANA
         {
             get => MAG * 2;
-            set{MANA = value;}
+            set { MANA = value; }
         }
+        #endregion GET/SET PROPERTIES
 
+        #region AUXILIARY METHODS
         public static string ClassName(BaseClass _class)
         {
             return _class.GetType().Name;
         }
+        #endregion AUXILIARY METHODS
     }
 }

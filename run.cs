@@ -18,8 +18,7 @@ namespace SharpBattle
             FightLoop(player, enemy);
         }
 
-        // ---------------- METHODS ---------------
-
+        #region METHODS 
         private static void FightLoop(Player player, Enemy enemy)
         {
             var x = 0;
@@ -55,6 +54,6 @@ namespace SharpBattle
             }
             return;
         }
-
+        #endregion METHODS
     }
 }
