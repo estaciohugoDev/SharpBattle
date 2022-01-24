@@ -23,7 +23,7 @@ namespace SharpBattle
             Name = enemList[randName];
         }
 
-        // ---------------- METHODS ---------------
+        #region METHODS 
 
         public void EnemyAction(Player player)
         {
@@ -47,7 +47,6 @@ namespace SharpBattle
                     break;
             }
         }
-
         private double EnemyAttack(Player player)
         {
             if (player.HP <= 0)
@@ -62,10 +61,10 @@ namespace SharpBattle
             Console.WriteLine($"{Name} attacks {player.Name} causing {DMG} damage!");
             return DMG;
         }
-        public string EnemyFound(Player player, Enemy enemy)
-        {
-            return $"{player.Name} finds a {enemy.Name}, BATTLE START!";
-        }
+
+        #endregion METHODS 
+
+        #region AUXILIARY METHODS
         public static Enemy NewEnemy()
         {
             var enemy = new Enemy();
@@ -78,5 +77,7 @@ namespace SharpBattle
             $"           Enemy INFO \n\nName: {Name}\nHP: {HP:F2}"
             + "\n - - - - - - - - - - - - - - - - - - -\n";
         }
+
+        #endregion AUXILIARY METHODS
     }
 }

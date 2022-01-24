@@ -5,11 +5,12 @@ namespace SharpBattle.Util
 {
     public class Utilities
     {
-        public static string WelcomeBattle()
+        public static void WelcomeBattle()
         {
             Console.Clear();
-            return "#--------- SHARPBATTLE ----------#";
+            Console.WriteLine("#--------- SHARPBATTLE ----------#");
         }
+        #region PROMPTS/SCREENS
         public static void GameOverScreen()
         {
             System.Console.WriteLine("-----> Would you like to continue?\n----> Yes(Y).\n---> No.(N)");
@@ -43,16 +44,9 @@ namespace SharpBattle.Util
             }
 
         }
-        public static void Wait()
-        {
-            for (var i = 0; i <= 5; i++)
-            {
-                Console.Write(".");
-                Thread.Sleep(500);
-            }
-        }
         public static void MainMenuPrompt()
         {
+            Console.Clear();
             System.Console.WriteLine("----------- < MAIN MENU >");
             System.Console.WriteLine("1 ------ New Game");
             System.Console.WriteLine("2 ---- Load Game");
@@ -64,7 +58,10 @@ namespace SharpBattle.Util
             switch (choice)
             {
                 case 1:
-                    Player player = new Player();
+                    Player player = new Player
+                    {
+                        Enemy = Enemy.NewEnemy()
+                    };
                     Run.Start(player);
                     break;
 
@@ -72,6 +69,54 @@ namespace SharpBattle.Util
                     System.Console.WriteLine("-------- < Select Character >");
                     SaveLoadFiles.ShowCharacters();
                     break;
+            }
+        }
+
+        #endregion PROMPTS/SCREENS
+
+        #region MAIN FIGHT LOOP
+        public static void FightLoop(Player player, Enemy enemy)
+        {
+            var x = 0;
+            while (x == 0)
+            {
+                //Wait for player input
+                if (player.HP > 0)
+                    player.NextAction(enemy);
+                else
+                {
+                    System.Console.WriteLine($"{player.Name} DIED! - GAME OVER");
+                    Utilities.GameOverScreen();
+                    break;
+                }
+                //Get randomized enemy action
+                if (enemy.HP > 0)
+                    enemy.EnemyAction(player);
+
+                else
+                {
+                    if (SaveLoadFiles.SaveGamePrompt())
+                        SaveLoadFiles.SaveGame(player);
+
+                    System.Console.WriteLine("---- HERE COMES A NEW CHALLENGER ----");
+                    player.IsTurn = true;
+                    x = 1;
+                    enemy = Enemy.NewEnemy();
+                    Console.WriteLine(player.EnemyFound());
+                    Console.WriteLine(enemy.EnemyInfo());
+                    Utilities.Wait();
+                    FightLoop(player, enemy);
+                }
+            }
+            // return;
+        }
+        #endregion MAIN FIGHT LOOP
+        public static void Wait()
+        {
+            for (var i = 0; i <= 5; i++)
+            {
+                Console.Write(".");
+                Thread.Sleep(500);
             }
         }
     }

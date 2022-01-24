@@ -1,6 +1,6 @@
 ﻿namespace SharpBattle.Entities.Enums
 {
-    enum Stances : int
+    enum Stances
     {
         Attacking = 1,
         Defending = 2,

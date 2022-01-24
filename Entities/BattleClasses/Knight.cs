@@ -7,7 +7,7 @@ namespace SharpBattle
 {
     class Knight : BaseClass
     {
-        static Knight KnightClass { get => GetKnightBuffer(); }
+        //static Knight KnightClass { get => GetPlayerBuffer(); }
         public Knight() : base()
         {
             HP = 30.00;
@@ -16,14 +16,12 @@ namespace SharpBattle
             MAG = 2.0;
             HLY = 4.0;
             LCK = 6.0;
-            //MANA        = 4.0 * MAG;
         }
         #region CLASS SKILLS
         public static double CrossSlash(Player player, Enemy enemy)
         {
-
             Random rnd = new Random();
-            double skillDamage = GetKnightBuffer().DMG;
+            double skillDamage = player.DMG;
             skillDamage += rnd.Next(10, 50);
             enemy.HP -= skillDamage;
             System.Console.WriteLine($"{player.Name} casts Cross Slash, {enemy.Name} receives {skillDamage} damage!");
@@ -63,22 +61,11 @@ namespace SharpBattle
                     break;
             }
         }
-        public static void OverridePlayerStats(Player player)
-        {
-            var knight = new Knight();
-
-            player.HP = knight.HP;
-            player.DMG = knight.DMG;
-            player.DEF = knight.DEF;
-            player.MAG = knight.MAG;
-            player.HLY = knight.HLY;
-            player.LCK = knight.LCK;
-        }
-        public static Knight GetKnightBuffer()
-        {
-            Knight knight = new Knight();
-            return knight;
-        }
+        // public static Knight GetPlayerBuffer()
+        // {
+        //     Knight knight = new Knight();
+        //     return knight;
+        // }
         #endregion AUXILIARY METHODS
     }
 }

@@ -46,18 +46,29 @@ namespace SharpBattle
             get => _lck;
             set { _lck = value; }
         }
-
-        public double MANA
-        {
-            get => MAG * 2;
-            set { MANA = value; }
-        }
+        /*
+                public double MANA
+                {
+                    get => MAG * 2;
+                    set { MANA = value; }
+                }
+        */
         #endregion GET/SET PROPERTIES
 
         #region AUXILIARY METHODS
         public static string ClassName(BaseClass _class)
         {
             return _class.GetType().Name;
+        }
+
+        public void OverridePlayerStats(Player player, BaseClass obj)
+        {
+            player.HP = obj.HP;
+            player.DMG = obj.DMG;
+            player.DEF = obj.DEF;
+            player.MAG = obj.MAG;
+            player.HLY = obj.HLY;
+            player.LCK = obj.LCK;
         }
         #endregion AUXILIARY METHODS
     }

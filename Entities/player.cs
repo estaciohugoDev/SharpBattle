@@ -12,6 +12,7 @@ namespace SharpBattle
         public BaseClass PlayerClass;
         private Stances FightingStances { get; set; }
         public bool IsTurn = true;
+        public Enemy Enemy { get; set; }
 
         public Player() { CreatePlayer(); }
 
@@ -42,13 +43,13 @@ namespace SharpBattle
             }
         }
 
-        // ---------------- METHODS ---------------
+        #region METHODS
 
-        public void NextAction(Enemy enemy)
+        public void BattleActions(Enemy enemy)
         {
             while (IsTurn)
             {
-                Console.WriteLine(Utilities.WelcomeBattle());
+                Utilities.WelcomeBattle();
                 Console.WriteLine(PlayerInfo());
                 Console.WriteLine("----> Battle Actions <----\n " +
                 "1 - Attack!\n " +
@@ -97,7 +98,7 @@ namespace SharpBattle
                     case 4:
                         if (BaseClass.ClassName(PlayerClass) == "Knight")
                         {
-                            Knight knightVar = Knight.GetKnightBuffer();
+                            Knight knightVar = (Knight)this.Class;
                             knightVar.ListSkills();
                             knightVar.ChooseSkill(this, enemy);
                             Utilities.Wait();
@@ -153,7 +154,7 @@ namespace SharpBattle
                 "Choose one of the following: \n" +
                 "1 - Tiger Stance(+DMG) \n" +
                 "2 - Turtle Stance (+DEF) \n" +
-                "3 - Phoenix Stance (+POW) \n" +
+                "3 - Phoenix Stance (+MAG) \n" +
                 "4 - Panda Stance (+HLY) \n");
             Console.Write("Switching to: ");
             var choice = int.Parse(Console.ReadLine());
@@ -187,7 +188,6 @@ namespace SharpBattle
                 Utilities.Wait();
                 SwitchStance();
             }
-
         }
         private void Scan(Enemy enemy)
         {
@@ -209,8 +209,9 @@ namespace SharpBattle
                 {
                     case 1:
                         System.Console.WriteLine($"{player.Name} is now a Knight!");
-                        player.Class = new Knight();
-                        Knight.OverridePlayerStats(this);
+                        Knight knight = new Knight();
+                        player.Class = knight;
+                        knight.OverridePlayerStats(player, knight);
                         break;
                     default:
                         System.Console.WriteLine("Not implemented.");
@@ -225,9 +226,16 @@ namespace SharpBattle
                 Utilities.Wait();
                 SelectClass(this);
             }
-
         }
 
+        public string EnemyFound()
+        {
+            return $"{this.Name} finds a {this.Enemy.Name}, BATTLE START!";
+        }
+
+        #endregion METHODS
+
+        #region AUXILIARY METHODS
         public static List<string> CondensedPlayerInfo(Player player)
         {
             List<string> playerInfo = new List<string>
@@ -247,8 +255,9 @@ namespace SharpBattle
         private string PlayerInfo()
         {
             return "\n - - - - - - - - - - - - - - - - - - -\n" +
-            $"           CHARACTER INFO \n\nName: {PlayerName}\nClass: {this.Class.GetType().Name}\nHP: {HP:F2}"
+            $"           CHARACTER INFO \n\nName: {PlayerName}\nClass: {this.Class.GetType().Name}\nHP: {HP:F2}\nStance: {this.FightingStances}\n"
             + "\n - - - - - - - - - - - - - - - - - - -\n";
         }
+        #endregion AUXILIARY METHODS
     }
 }
