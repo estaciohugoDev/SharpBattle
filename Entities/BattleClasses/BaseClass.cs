@@ -47,11 +47,11 @@ namespace SharpBattle
             set { _lck = value; }
         }
         /*
-                public double MANA
-                {
-                    get => MAG * 2;
-                    set { MANA = value; }
-                }
+        public double MANA
+        {
+            get => MAG * 2;
+            set { MANA = value; }
+        }
         */
         #endregion GET/SET PROPERTIES
 

@@ -94,20 +94,30 @@ namespace SharpBattle
 
         public static void ShowCharacters()
         {
-            DirectoryInfo folder = new DirectoryInfo(folderName);
-            string[] files = new string[folder.GetFiles().Length];
-            int counter = 0;
-
-            for (int i = 0; i < files.Length; i++)
+            if(IsFolderCreated())
             {
-                var fileHold = folder.GetFiles("*.txt").GetValue(i).ToString();
-                files[i] = Path.GetFileNameWithoutExtension(fileHold);
+                DirectoryInfo folder = new DirectoryInfo(folderName);
+                string[] files = new string[folder.GetFiles().Length];
+                int counter = 0;
+
+                for (int i = 0; i < files.Length; i++)
+                {
+                    var fileHold = folder.GetFiles("*.txt").GetValue(i).ToString();
+                    files[i] = Path.GetFileNameWithoutExtension(fileHold);
+                }
+
+                foreach (string file in files)
+                {
+                    System.Console.WriteLine($"{counter + 1} - {files[counter]}");
+                    counter++;
+                }
             }
-
-            foreach (string file in files)
+            else
             {
-                System.Console.WriteLine($"{counter + 1} - {files[counter]}");
-                counter++;
+                Console.Clear();
+                System.Console.WriteLine("There are no save files, yet.");
+                Utilities.Wait();
+                Utilities.MainMenuPrompt();
             }
         }
         private static Boolean IsFolderCreated()

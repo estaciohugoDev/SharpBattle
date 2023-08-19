@@ -7,7 +7,6 @@ namespace SharpBattle
 {
     class Knight : BaseClass
     {
-        //static Knight KnightClass { get => GetPlayerBuffer(); }
         public Knight() : base()
         {
             HP = 30.00;
@@ -57,15 +56,10 @@ namespace SharpBattle
 
                 default:
                     System.Console.WriteLine("Invalid option, going back.");
-                    player.NextAction(enemy);
+                    player.BattleActions(enemy);
                     break;
             }
         }
-        // public static Knight GetPlayerBuffer()
-        // {
-        //     Knight knight = new Knight();
-        //     return knight;
-        // }
         #endregion AUXILIARY METHODS
     }
 }

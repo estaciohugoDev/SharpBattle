@@ -14,7 +14,7 @@ namespace SharpBattle.Util
         public static void GameOverScreen()
         {
             System.Console.WriteLine("-----> Would you like to continue?\n----> Yes(Y).\n---> No.(N)");
-            char choice = char.Parse(Console.ReadLine());
+            char choice = char.Parse(Console.ReadLine().ToUpper());
             Console.Clear();
 
             try
@@ -82,7 +82,7 @@ namespace SharpBattle.Util
             {
                 //Wait for player input
                 if (player.HP > 0)
-                    player.NextAction(enemy);
+                    player.BattleActions(enemy);
                 else
                 {
                     System.Console.WriteLine($"{player.Name} DIED! - GAME OVER");
@@ -102,6 +102,7 @@ namespace SharpBattle.Util
                     player.IsTurn = true;
                     x = 1;
                     enemy = Enemy.NewEnemy();
+                    player.Enemy = enemy;
                     Console.WriteLine(player.EnemyFound());
                     Console.WriteLine(enemy.EnemyInfo());
                     Utilities.Wait();

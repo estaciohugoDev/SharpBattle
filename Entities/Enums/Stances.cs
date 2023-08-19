@@ -2,8 +2,8 @@
 {
     enum Stances
     {
-        Attacking = 1,
-        Defending = 2,
+        Tiger = 1,
+        Turtle = 2,
         Casting = 3,
         Healing = 4
     }

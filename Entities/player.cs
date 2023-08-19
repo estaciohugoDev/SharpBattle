@@ -237,7 +237,7 @@ namespace SharpBattle
 
         #region AUXILIARY METHODS
         public static List<string> CondensedPlayerInfo(Player player)
-        {
+        {   
             List<string> playerInfo = new List<string>
             {
                 player.Name,
