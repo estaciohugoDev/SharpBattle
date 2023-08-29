@@ -6,45 +6,47 @@ namespace SharpBattle
 {
     public class BaseClass
     {
-        protected double _hp = 20.00;
-        protected double _dmg = 10.00;
-        protected double _def = 2.0;
-        protected double _mag = 4.0;
-        protected double _hly = 2.0;
-        protected double _lck = 1.0;
+        protected double Hp = 20.00;
+        protected double Str = 10.00;
+        protected double Dmg {get; private set;}
+        protected double Def = 2.0;
+        protected double Mag = 4.0;
+        protected double Hly = 2.0;
+        protected double Lck = 1.0;
 
         #region GET/SET PROPERTIES
-        public BaseClass() { }
-
+        public BaseClass() {
+            Dmg = Str * 1.1;
+        }
         public double HP
         {
-            get => _hp;
-            set { _hp = value; }
+            get => Hp;
+            set { Hp = value; }
         }
-        public double DMG
+        public double STR
         {
-            get => _dmg;
-            set { _dmg = value; }
+            get => Str;
+            set => Str = value;
         }
         public double DEF
         {
-            get => _def;
-            set { _def = value; }
+            get => Def;
+            set { Def = value; }
         }
         public double MAG
         {
-            get => _mag;
-            set { _mag = value; }
+            get => Mag;
+            set { Mag = value; }
         }
         public double HLY
         {
-            get => _hly;
-            set { _hly = value; }
+            get => Hly;
+            set { Hly = value; }
         }
         public double LCK
         {
-            get => _lck;
-            set { _lck = value; }
+            get => Lck;
+            set { Lck = value; }
         }
         /*
         public double MANA
@@ -61,10 +63,10 @@ namespace SharpBattle
             return _class.GetType().Name;
         }
 
-        public void OverridePlayerStats(Player player, BaseClass obj)
+        public static void OverridePlayerStats(Player player, BaseClass obj)
         {
             player.HP = obj.HP;
-            player.DMG = obj.DMG;
+            player.STR = obj.STR;
             player.DEF = obj.DEF;
             player.MAG = obj.MAG;
             player.HLY = obj.HLY;

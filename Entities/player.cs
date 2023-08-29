@@ -6,14 +6,14 @@ using SharpBattle.Util;
 
 namespace SharpBattle
 {
-    public class Player : BaseClass
+    public class Player : BaseEntity
     {
-        public static string PlayerName;
+        private static string PlayerName;
         public BaseClass PlayerClass;
-        private Stances FightingStances { get; set; }
+        public string ClassName { get; private set;}
+        private FightingStances Stances { get; set; }
         public bool IsTurn = true;
         public Enemy Enemy { get; set; }
-
         public Player() { CreatePlayer(); }
 
         public BaseClass Class
@@ -25,13 +25,13 @@ namespace SharpBattle
                     PlayerClass = value;
                 else
                 {
-                    System.Console.WriteLine("What class, mate?");
+                    System.Console.WriteLine("Invalid Class.");
                     Utilities.Wait();
-                    SelectClass(this);
+                    SelectClass();
                 }
             }
         }
-        public string Name
+        public static new string Name
         {
             get => PlayerName;
             set
@@ -42,15 +42,14 @@ namespace SharpBattle
                     PlayerName = "Player";
             }
         }
-
         #region METHODS
 
         public void BattleActions(Enemy enemy)
         {
             while (IsTurn)
             {
-                Utilities.WelcomeBattle();
-                Console.WriteLine(PlayerInfo());
+                Utilities.Welcome();
+                Console.WriteLine(CharacterSheet());
                 Console.WriteLine("----> Battle Actions <----\n " +
                 "1 - Attack!\n " +
                 "2 - Scan!\n " +
@@ -78,7 +77,6 @@ namespace SharpBattle
                         IsTurn = false;
                         enemy.IsTurn = true;
                         break;
-
                     case 2:
                         Scan(enemy);
                         Utilities.Wait();
@@ -98,9 +96,9 @@ namespace SharpBattle
                     case 4:
                         if (BaseClass.ClassName(PlayerClass) == "Knight")
                         {
-                            Knight knightVar = (Knight)this.Class;
+                            Knight knightVar = (Knight)Class;
                             knightVar.ListSkills();
-                            knightVar.ChooseSkill(this, enemy);
+                            Knight.ChooseSkill(this, enemy);
                             Utilities.Wait();
                             Console.Clear();
                             IsTurn = false;
@@ -112,8 +110,8 @@ namespace SharpBattle
                         Console.WriteLine("Not implemented yet");
                         Utilities.Wait();
                         Console.Clear();
-                        IsTurn = false;
-                        enemy.IsTurn = true;
+                        IsTurn = true;
+                        enemy.IsTurn = false;
                         break;
                 }
             }
@@ -124,7 +122,7 @@ namespace SharpBattle
             try
             {
                 PlayerName = Console.ReadLine();
-                SelectClass(this);
+                SelectClass();
             }
             catch (FormatException e)
             {
@@ -164,15 +162,15 @@ namespace SharpBattle
                 switch (choice)
                 {
                     case 1:
-                        this.FightingStances = (Stances)choice;
-                        this.DMG += 10;
-                        Console.WriteLine($"{this.Name} changed stance to: {this.FightingStances}");
+                        Stances = (FightingStances)choice;
+                        DMG += 1.1;
+                        Console.WriteLine($"{Name} changed stance to: {Stances}");
                         break;
 
                     case 2:
-                        this.FightingStances = (Stances)choice;
-                        this.HP += 20;
-                        Console.WriteLine($"{this.Name} changed stance to: {this.FightingStances}");
+                        Stances = (FightingStances)choice;
+                        HP += 20;
+                        Console.WriteLine($"{Name} changed stance to: {Stances}");
                         break;
 
                     default:
@@ -189,12 +187,12 @@ namespace SharpBattle
                 SwitchStance();
             }
         }
-        private void Scan(Enemy enemy)
+        private static void Scan(Enemy enemy)
         {
             Console.WriteLine($"{Name} scans {enemy.Name}!");
             Console.WriteLine(enemy.EnemyInfo());
         }
-        public void SelectClass(Player player)
+        public void SelectClass()
         {
             Console.Clear();
             Console.WriteLine("-----> Please select a class <----- ");
@@ -208,15 +206,14 @@ namespace SharpBattle
                 switch (choice)
                 {
                     case 1:
-                        System.Console.WriteLine($"{player.Name} is now a Knight!");
-                        Knight knight = new Knight();
-                        player.Class = knight;
-                        knight.OverridePlayerStats(player, knight);
+                        Class = new Knight();
+                        Console.WriteLine($"{Name} is now a {Class.GetType().Name}!");
+                        BaseClass.OverridePlayerStats(this, Class);
                         break;
                     default:
-                        System.Console.WriteLine("Not implemented.");
+                        Console.WriteLine("Not implemented.");
                         Utilities.Wait();
-                        SelectClass(this);
+                        SelectClass();
                         break;
                 }
             }
@@ -224,23 +221,23 @@ namespace SharpBattle
             {
                 Console.WriteLine($"Invalid input: {e.Message}");
                 Utilities.Wait();
-                SelectClass(this);
+                SelectClass();
             }
         }
 
         public string EnemyFound()
         {
-            return $"{this.Name} finds a {this.Enemy.Name}, BATTLE START!";
+            return $"{Name} finds a {Enemy.Name}, BATTLE START!";
         }
 
         #endregion METHODS
 
         #region AUXILIARY METHODS
-        public static List<string> CondensedPlayerInfo(Player player)
-        {   
-            List<string> playerInfo = new List<string>
+        public static List<string> PlayerInfo (Player player)
+        {
+            List<string> playerInfo = new()
             {
-                player.Name,
+                Name,
                 player.Class.GetType().Name,
                 player.HP.ToString(),
                 player.DMG.ToString(),
@@ -252,10 +249,10 @@ namespace SharpBattle
 
             return playerInfo;
         }
-        private string PlayerInfo()
+        private string CharacterSheet()
         {
             return "\n - - - - - - - - - - - - - - - - - - -\n" +
-            $"           CHARACTER INFO \n\nName: {PlayerName}\nClass: {this.Class.GetType().Name}\nHP: {HP:F2}\nStance: {this.FightingStances}\n"
+            $"           CHARACTER INFO \n\nName: {PlayerName}\nClass: {this.Class.GetType().Name}\nHP: {HP:F2}\nStance: {Stances}\n"
             + "\n - - - - - - - - - - - - - - - - - - -\n";
         }
         #endregion AUXILIARY METHODS

@@ -28,7 +28,7 @@ namespace SharpBattle
             switch (choice)
             {
                 case 1:
-                    System.Console.WriteLine($"{player.Name} is now a Knight!");
+                    System.Console.WriteLine($"{Player.Name} is now a Knight!");
                     player.Class = new Knight();
                     break;
                 //return chosenClass;
@@ -45,7 +45,7 @@ namespace SharpBattle
         {
             if (player.Class.GetType().Name == "Knight")
             {
-                Knight knightVar = new Knight();
+                Knight knightVar = new();
                 return knightVar;
             }
             else

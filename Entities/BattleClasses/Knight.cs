@@ -9,24 +9,22 @@ namespace SharpBattle
     {
         public Knight() : base()
         {
-            HP = 30.00;
-            DMG *= 1.2;
-            DEF += 10.00;
-            MAG = 2.0;
-            HLY = 4.0;
-            LCK = 6.0;
+            HP *= 0.2;
+            STR *= 0.5;
+            DEF *= 1.1;
+            MAG *= 2.0;
+            HLY *= 4.0;
         }
         #region CLASS SKILLS
-        public static double CrossSlash(Player player, Enemy enemy)
+        public static double CrossSlash(Player player, BaseEntity target)
         {
-            Random rnd = new Random();
-            double skillDamage = player.DMG;
-            skillDamage += rnd.Next(10, 50);
-            enemy.HP -= skillDamage;
-            System.Console.WriteLine($"{player.Name} casts Cross Slash, {enemy.Name} receives {skillDamage} damage!");
-            if (enemy.HP <= 0)
+            Random rnd = new();
+            var skillDamage = player.DMG + rnd.Next(10, 50);
+            target.HP -= skillDamage;
+            System.Console.WriteLine($"{Player.Name} casts Cross Slash, {target.Name} receives {skillDamage} damage!");
+            if (target.HP <= 0)
             {
-                Console.WriteLine($"{player.Name} beat {enemy.Name}!");
+                Console.WriteLine($"{Player.Name} beat {target.Name}!");
                 return 0;
             }
             return skillDamage;
@@ -37,13 +35,13 @@ namespace SharpBattle
         public void ListSkills()
         {
             Console.Clear();
-            StringBuilder listOfSkills = new StringBuilder();
+            StringBuilder listOfSkills = new();
             listOfSkills.AppendLine($"-----> {this.GetType().Name} Skills <-----");
             listOfSkills.Append("1 - Cross Slash (Phys DMG)");
 
             System.Console.WriteLine(listOfSkills);
         }
-        public void ChooseSkill(Player player, Enemy enemy)
+        public static void ChooseSkill(Player player, Enemy enemy)
         {
             System.Console.WriteLine("Choose a skill: ");
             short choice = short.Parse(Console.ReadLine());

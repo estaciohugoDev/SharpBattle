@@ -1,6 +1,6 @@
 ﻿namespace SharpBattle.Entities.Enums
 {
-    enum Stances
+    enum FightingStances
     {
         Tiger = 1,
         Turtle = 2,

@@ -10,8 +10,8 @@ namespace SharpBattle
 {
     public static class SaveLoadFiles
     {
-        private static readonly string FileName = $"{Player.PlayerName}.txt";
-        private static readonly FileInfo fi = new FileInfo(FileName);
+        private static readonly string FileName = $"{Player.Name}.txt";
+        private static readonly FileInfo fi = new(FileName);
         private static readonly string projectPath = Directory.GetCurrentDirectory().ToString();
         private static readonly string folderName = Path.Combine(projectPath, "SaveData");
 
@@ -26,14 +26,14 @@ namespace SharpBattle
                 string fullFilePath = Path.Combine(folderName, FileName);
                 try
                 {
-                    using (StreamWriter sw = new StreamWriter(fullFilePath))
+                    using (StreamWriter sw = new(fullFilePath))
                     {
-                        foreach (string data in Player.CondensedPlayerInfo(playerData))
+                        foreach (string data in Player.PlayerInfo(playerData))
                         {
                             sw.WriteLine(data);
                         }
                     }
-                    System.Console.WriteLine($"{playerData.Name} data has been saved!");
+                    System.Console.WriteLine($"{Player.Name} data has been saved!");
                 }
                 catch (Exception e)
                 {
@@ -51,7 +51,7 @@ namespace SharpBattle
             Boolean save = false;
             Console.Clear();
             System.Console.Write("-----> Would you like to save?\n----> Yes(Y).\n---> No.(N)\nChoice: ");
-            string choice = Console.ReadLine().ToString().ToUpper();
+            string choice = Console.ReadLine().ToUpper();
 
             switch (choice)
             {
@@ -96,7 +96,7 @@ namespace SharpBattle
         {
             if(IsFolderCreated())
             {
-                DirectoryInfo folder = new DirectoryInfo(folderName);
+                DirectoryInfo folder = new(folderName);
                 string[] files = new string[folder.GetFiles().Length];
                 int counter = 0;
 
@@ -120,14 +120,8 @@ namespace SharpBattle
                 Utilities.MainMenuPrompt();
             }
         }
-        private static Boolean IsFolderCreated()
-        {
-            return Directory.Exists("SaveData");
-        }
-        private static Boolean CheckForFile()
-        {
-            return File.Exists(FileName);
-        }
+        private static Boolean IsFolderCreated(){return Directory.Exists("SaveData");}
+        private static Boolean CheckForFile(){return File.Exists(FileName);}
         #endregion AUXILIARY METHODS
 
     }

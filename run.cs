@@ -9,7 +9,7 @@ namespace SharpBattle
     {
         public static void Start(Player player)
         {
-            Utilities.WelcomeBattle();
+            Utilities.Welcome();
 
             //Get enemy from list
             player.EnemyFound();

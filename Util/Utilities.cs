@@ -5,7 +5,7 @@ namespace SharpBattle.Util
 {
     public class Utilities
     {
-        public static void WelcomeBattle()
+        public static void Welcome()
         {
             Console.Clear();
             Console.WriteLine("#--------- SHARPBATTLE ----------#");
@@ -53,12 +53,12 @@ namespace SharpBattle.Util
             System.Console.WriteLine("3 --- Quit");
 
             System.Console.Write("Choice: ");
-            int choice = int.Parse(Console.ReadLine());
+            var choice = int.Parse(Console.ReadLine());
 
             switch (choice)
             {
                 case 1:
-                    Player player = new Player
+                    Player player = new()
                     {
                         Enemy = Enemy.NewEnemy()
                     };
@@ -68,6 +68,16 @@ namespace SharpBattle.Util
                 case 2:
                     System.Console.WriteLine("-------- < Select Character >");
                     SaveLoadFiles.ShowCharacters();
+                    break;
+
+                case 3:
+                    return;
+
+                default:
+                    Console.WriteLine("Values between 1 - 3 ONLY!");
+                    Utilities.Wait();
+                    Console.Clear();
+                    MainMenuPrompt();
                     break;
             }
         }
@@ -85,7 +95,7 @@ namespace SharpBattle.Util
                     player.BattleActions(enemy);
                 else
                 {
-                    System.Console.WriteLine($"{player.Name} DIED! - GAME OVER");
+                    System.Console.WriteLine($"{Player.Name} DIED! - GAME OVER");
                     Utilities.GameOverScreen();
                     break;
                 }

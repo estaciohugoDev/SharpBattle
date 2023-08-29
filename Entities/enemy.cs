@@ -5,22 +5,17 @@ using SharpBattle.Util;
 
 namespace SharpBattle
 {
-    public class Enemy
+    public class Enemy : BaseEntity
     {
-        public readonly string Name;
-        public double HP = 10.00;
-        private double DMG { get; set; }
-        private double DEF { get; set; }
-        private double MAG { get; set; }
-        private double HLY { get; set; }
+        protected new double DMG { get; set; }
         public bool IsTurn;
-
         public Enemy()
         {
             string[] enemList = { "Thief", "Furry", "Communist", "Slime", "Skeleton swordsman", "Wolf", "Cave Troll" };
-            Random rand = new Random();
+            Random rand = new();
             int randName = rand.Next(enemList.Length);
             Name = enemList[randName];
+            DMG = STR/2;
         }
 
         #region METHODS 
@@ -32,7 +27,7 @@ namespace SharpBattle
 
             if (!(HP > 0))
             {
-                Console.WriteLine($"{player.Name} beat {Name}!");
+                Console.WriteLine($"{Player.Name} beat {Name}!");
                 return;
             }
             if (!IsTurn) return;
@@ -51,14 +46,14 @@ namespace SharpBattle
         {
             if (player.HP <= 0)
             {
-                Console.WriteLine($"{Name} beat {player.Name}!");
+                Console.WriteLine($"{Name} beat {Player.Name}!");
                 return 0;
             }
 
             var rnd = new Random();
             DMG = rnd.Next(2, 20);
             player.HP -= DMG;
-            Console.WriteLine($"{Name} attacks {player.Name} causing {DMG} damage!");
+            Console.WriteLine($"{Name} attacks {Player.Name} causing {DMG} damage!");
             return DMG;
         }
 
@@ -67,9 +62,7 @@ namespace SharpBattle
         #region AUXILIARY METHODS
         public static Enemy NewEnemy()
         {
-            var enemy = new Enemy();
-
-            return enemy;
+            return new Enemy();
         }
         public string EnemyInfo()
         {
