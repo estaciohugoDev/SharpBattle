@@ -9,22 +9,22 @@ namespace SharpBattle
     {
         public Knight() : base()
         {
-            HP *= 0.2;
-            STR *= 0.5;
-            DEF *= 1.1;
-            MAG *= 2.0;
-            HLY *= 4.0;
+            HP *= (int)1.5;
+            STR *= (int)1.5;
+            DEF *= (int)1.2;
+            MAG *= 1;
+            HLY *= 1;
+            Name = "Knight";
         }
         #region CLASS SKILLS
         public static double CrossSlash(Player player, BaseEntity target)
         {
-            Random rnd = new();
-            var skillDamage = player.DMG + rnd.Next(10, 50);
-            target.HP -= skillDamage;
-            System.Console.WriteLine($"{Player.Name} casts Cross Slash, {target.Name} receives {skillDamage} damage!");
+            var skillDamage = player.DMG + player.Roll.Next(10, 50);
+            target.TakeDamage(skillDamage);
+            System.Console.WriteLine($"{player.Name} casts Cross Slash, {target.Name} receives {skillDamage} damage!");
             if (target.HP <= 0)
             {
-                Console.WriteLine($"{Player.Name} beat {target.Name}!");
+                Console.WriteLine($"{player.Name} defeated {target.Name}!");
                 return 0;
             }
             return skillDamage;
@@ -36,7 +36,7 @@ namespace SharpBattle
         {
             Console.Clear();
             StringBuilder listOfSkills = new();
-            listOfSkills.AppendLine($"-----> {this.GetType().Name} Skills <-----");
+            listOfSkills.AppendLine($"-----> {Name} Skills <-----");
             listOfSkills.Append("1 - Cross Slash (Phys DMG)");
 
             System.Console.WriteLine(listOfSkills);
@@ -54,7 +54,7 @@ namespace SharpBattle
 
                 default:
                     System.Console.WriteLine("Invalid option, going back.");
-                    player.BattleActions(enemy);
+                    player.Actions(enemy);
                     break;
             }
         }

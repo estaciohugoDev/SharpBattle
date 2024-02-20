@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Data;
 using System.Threading.Channels;
 using SharpBattle.Entities;
 using SharpBattle.Util;
@@ -7,34 +8,33 @@ namespace SharpBattle
 {
     public class Enemy : BaseEntity
     {
-        protected new double DMG { get; set; }
         public bool IsTurn;
         public Enemy()
         {
-            string[] enemList = { "Thief", "Furry", "Communist", "Slime", "Skeleton swordsman", "Wolf", "Cave Troll" };
-            Random rand = new();
-            int randName = rand.Next(enemList.Length);
-            Name = enemList[randName];
-            DMG = STR/2;
+            string[] enemList = { "Thief", "Furry", "Bandit", "Slime", "Skeleton", "Wolf", "Troll" };
+            int randomName = Roll.Next(enemList.Length);
+            STR = Roll.Next(1,5);
+            DEF = Roll.Next(1,5);
+            Name = enemList[randomName];
         }
 
         #region METHODS 
 
-        public void EnemyAction(Player player)
+        public void Actions(Player player)
         {
             var action = 1;
             //Action is attack by default since rest TBI
 
             if (!(HP > 0))
             {
-                Console.WriteLine($"{Player.Name} beat {Name}!");
+                Console.WriteLine($"{player.Name} beat {Name}!");
                 return;
             }
             if (!IsTurn) return;
             switch (action)
             {
                 case 1:
-                    EnemyAttack(player);
+                    Attack(player);
                     Utilities.Wait();
                     Console.Clear();
                     IsTurn = false;
@@ -42,18 +42,17 @@ namespace SharpBattle
                     break;
             }
         }
-        private double EnemyAttack(Player player)
+        private double Attack(Player player)
         {
             if (player.HP <= 0)
             {
-                Console.WriteLine($"{Name} beat {Player.Name}!");
+                Console.WriteLine($"{Name} beat {player.Name}!");
                 return 0;
             }
 
-            var rnd = new Random();
-            DMG = rnd.Next(2, 20);
-            player.HP -= DMG;
-            Console.WriteLine($"{Name} attacks {Player.Name} causing {DMG} damage!");
+            DMG = Roll.Next(1,STR);
+            player.TakeDamage(DMG);
+            Console.WriteLine($"{Name} attacks {player.Name} causing {DMG} damage!");
             return DMG;
         }
 

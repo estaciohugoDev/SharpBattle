@@ -1,134 +1,56 @@
 using System;
 using System.Threading;
+using Microsoft.VisualBasic;
+using SharpBattle.Entities;
 
 namespace SharpBattle.Util
 {
     public class Utilities
     {
-        public static void Welcome()
-        {
-            Console.Clear();
-            Console.WriteLine("#--------- SHARPBATTLE ----------#");
-        }
-        #region PROMPTS/SCREENS
-        public static void GameOverScreen()
-        {
-            System.Console.WriteLine("-----> Would you like to continue?\n----> Yes(Y).\n---> No.(N)");
-            char choice = char.Parse(Console.ReadLine().ToUpper());
-            Console.Clear();
-
-            try
-            {
-                switch (choice)
-                {
-                    case 'Y':
-                        var player = new Player();
-                        Run.Start(player);
-                        break;
-
-                    case 'N':
-                        return;
-
-                    default:
-                        System.Console.WriteLine("Please type Y or N ONLY!");
-                        Wait();
-                        GameOverScreen();
-                        break;
-                }
-            }
-            catch (FormatException e)
-            {
-                Console.WriteLine($"Invalid input: {e.Message}");
-                Wait();
-                GameOverScreen();
-            }
-
-        }
-        public static void MainMenuPrompt()
-        {
-            Console.Clear();
-            System.Console.WriteLine("----------- < MAIN MENU >");
-            System.Console.WriteLine("1 ------ New Game");
-            System.Console.WriteLine("2 ---- Load Game");
-            System.Console.WriteLine("3 --- Quit");
-
-            System.Console.Write("Choice: ");
-            var choice = int.Parse(Console.ReadLine());
-
-            switch (choice)
-            {
-                case 1:
-                    Player player = new()
-                    {
-                        Enemy = Enemy.NewEnemy()
-                    };
-                    Run.Start(player);
-                    break;
-
-                case 2:
-                    System.Console.WriteLine("-------- < Select Character >");
-                    SaveLoadFiles.ShowCharacters();
-                    break;
-
-                case 3:
-                    return;
-
-                default:
-                    Console.WriteLine("Values between 1 - 3 ONLY!");
-                    Utilities.Wait();
-                    Console.Clear();
-                    MainMenuPrompt();
-                    break;
-            }
-        }
-
-        #endregion PROMPTS/SCREENS
+        public static bool loop = true;
 
         #region MAIN FIGHT LOOP
         public static void FightLoop(Player player, Enemy enemy)
         {
-            var x = 0;
-            while (x == 0)
+            while (loop)
             {
                 //Wait for player input
                 if (player.HP > 0)
-                    player.BattleActions(enemy);
+                    player.Actions(enemy);
                 else
                 {
-                    System.Console.WriteLine($"{Player.Name} DIED! - GAME OVER");
-                    Utilities.GameOverScreen();
+                    System.Console.WriteLine($"{player.Name} DIED! - GAME OVER");
+                    Menus.GameOverScreen();
                     break;
                 }
                 //Get randomized enemy action
                 if (enemy.HP > 0)
-                    enemy.EnemyAction(player);
-
+                    enemy.Actions(player);
                 else
                 {
-                    if (SaveLoadFiles.SaveGamePrompt())
-                        SaveLoadFiles.SaveGame(player);
-
-                    System.Console.WriteLine("---- HERE COMES A NEW CHALLENGER ----");
+                    Console.WriteLine("---- HERE COMES A NEW CHALLENGER ----");
                     player.IsTurn = true;
-                    x = 1;
                     enemy = Enemy.NewEnemy();
-                    player.Enemy = enemy;
-                    Console.WriteLine(player.EnemyFound());
+                    TargetFound(player,enemy);
                     Console.WriteLine(enemy.EnemyInfo());
-                    Utilities.Wait();
+                    Wait();
                     FightLoop(player, enemy);
                 }
             }
             // return;
         }
         #endregion MAIN FIGHT LOOP
-        public static void Wait()
+        public static void Wait(int seconds = 3)
         {
-            for (var i = 0; i <= 5; i++)
+            for (var i = 0; i <= seconds; i++)
             {
                 Console.Write(".");
-                Thread.Sleep(500);
+                Thread.Sleep(seconds * 100);
             }
+        }
+        public static void TargetFound(Player player ,BaseEntity target)
+        {
+            Console.WriteLine($"{player.Name} finds a {target.Name}.");
         }
     }
 }

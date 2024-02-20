@@ -1,44 +1,41 @@
 using System;
 using System.Collections.Generic;
 using SharpBattle.Entities;
+using SharpBattle.Util;
 
 namespace SharpBattle
 {
     public class BaseClass
     {
-        protected double Hp = 20.00;
-        protected double Str = 10.00;
-        protected double Dmg {get; private set;}
-        protected double Def = 2.0;
-        protected double Mag = 4.0;
-        protected double Hly = 2.0;
+        protected int Hp = 10;
+        protected int Str = 10;
+        protected int Def = 5;
+        protected int Mag = 2;
+        protected int Hly = 2;
         protected double Lck = 1.0;
-
+        public string Name;
         #region GET/SET PROPERTIES
-        public BaseClass() {
-            Dmg = Str * 1.1;
-        }
-        public double HP
+        public int HP
         {
             get => Hp;
             set { Hp = value; }
         }
-        public double STR
+        public int STR
         {
             get => Str;
             set => Str = value;
         }
-        public double DEF
+        public int DEF
         {
             get => Def;
             set { Def = value; }
         }
-        public double MAG
+        public int MAG
         {
             get => Mag;
             set { Mag = value; }
         }
-        public double HLY
+        public int HLY
         {
             get => Hly;
             set { Hly = value; }
@@ -48,29 +45,43 @@ namespace SharpBattle
             get => Lck;
             set { Lck = value; }
         }
-        /*
-        public double MANA
-        {
-            get => MAG * 2;
-            set { MANA = value; }
-        }
-        */
         #endregion GET/SET PROPERTIES
 
         #region AUXILIARY METHODS
         public static string ClassName(BaseClass _class)
         {
-            return _class.GetType().Name;
+            return _class.Name;
         }
-
-        public static void OverridePlayerStats(Player player, BaseClass obj)
+        public static void SelectClass(BaseEntity entity)
         {
-            player.HP = obj.HP;
-            player.STR = obj.STR;
-            player.DEF = obj.DEF;
-            player.MAG = obj.MAG;
-            player.HLY = obj.HLY;
-            player.LCK = obj.LCK;
+            Console.Clear();
+            Console.WriteLine("-----> Select a Class <----- ");
+            Console.WriteLine("1 - Knight (DMG/DEF)\n");
+            System.Console.Write("Choice: ");
+            int choice = Convert.ToInt32(Console.ReadLine());
+
+            try
+            {
+                switch (choice)
+                {
+                    case 1:
+                        entity.Class = new Knight();
+                        Console.WriteLine($"{entity.Name} is now a {entity.Class.Name}!");
+                        entity.OverrideEntityStats(entity.Class);
+                        break;
+                    default:
+                        Console.WriteLine("Select one of the options.");
+                        Utilities.Wait();
+                        SelectClass(entity);
+                        break;
+                }
+            }
+            catch (FormatException e)
+            {
+                Console.WriteLine($"Invalid input: {e.Message}");
+                Utilities.Wait();
+                SelectClass(entity);
+            }
         }
         #endregion AUXILIARY METHODS
     }

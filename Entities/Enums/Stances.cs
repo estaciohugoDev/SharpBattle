@@ -1,10 +1,10 @@
 ﻿namespace SharpBattle.Entities.Enums
 {
-    enum FightingStances
+    public enum FightingStances
     {
-        Tiger = 1,
-        Turtle = 2,
-        Casting = 3,
-        Healing = 4
+        Aggressive = 1, //DMG
+        Defensive = 2, //DEF
+        Caster = 3, //MAG
+        Prayer = 4 //HLY
     }
 }

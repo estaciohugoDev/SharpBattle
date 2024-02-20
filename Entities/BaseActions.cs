@@ -10,6 +10,7 @@ namespace SharpBattle.Entities
         double Attack(BaseEntity target);
         double Guard();
         double Cast(BaseEntity target);
-        double Use();
+        void Use(); //TODO: use an item from Inventory
+        void TakeDamage (int damage);
     }
 }

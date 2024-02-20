@@ -8,14 +8,38 @@ using SharpBattle.Util;
 
 namespace SharpBattle
 {
-    public static class SaveLoadFiles
+    public static class SaveLoadGame
     {
-        private static readonly string FileName = $"{Player.Name}.txt";
+        private static string FileName; //= $"{Player.Name}.txt";
         private static readonly FileInfo fi = new(FileName);
         private static readonly string projectPath = Directory.GetCurrentDirectory().ToString();
         private static readonly string folderName = Path.Combine(projectPath, "SaveData");
 
-        #region SAVE GAME
+        public static void SaveGamePrompt(Player player)
+        {
+            Console.Clear();
+            System.Console.Write("-----> Would you like to save?\n----> Yes(Y).\n---> No.(N)\nChoice: ");
+            string choice = Console.ReadLine().ToUpper();
+
+            switch (choice)
+            {
+                case "Y":
+                    FileName = $"{player.Name}.txt";
+                    SaveGame(player);
+                    break;
+
+                case "N":
+                    break;
+
+                default:
+                    Console.Clear();
+                    System.Console.WriteLine("Yes(Y) or No(N) values only!");
+                    Utilities.Wait(3);
+                    SaveGamePrompt(player);
+                    break;
+            }
+            Console.Clear();
+        }
         public static void SaveGame(Player playerData)
         {
             if (!IsFolderCreated())
@@ -28,12 +52,13 @@ namespace SharpBattle
                 {
                     using (StreamWriter sw = new(fullFilePath))
                     {
-                        foreach (string data in Player.PlayerInfo(playerData))
+                        foreach (var data in Player.PlayerInfo(playerData))
                         {
                             sw.WriteLine(data);
                         }
                     }
-                    System.Console.WriteLine($"{Player.Name} data has been saved!");
+                    System.Console.WriteLine($"{playerData.Name} data has been saved!");
+                    Utilities.Wait();
                 }
                 catch (Exception e)
                 {
@@ -46,38 +71,14 @@ namespace SharpBattle
                 SaveGame(playerData);
             }
         }
-        public static Boolean SaveGamePrompt()
+
+        public static Player LoadGame()
         {
-            Boolean save = false;
-            Console.Clear();
-            System.Console.Write("-----> Would you like to save?\n----> Yes(Y).\n---> No.(N)\nChoice: ");
-            string choice = Console.ReadLine().ToUpper();
-
-            switch (choice)
-            {
-                case "Y":
-                    save = true;
-                    break;
-
-                case "N":
-                    save = false;
-                    break;
-
-                default:
-                    Console.Clear();
-                    System.Console.WriteLine("Error: Yes(Y) or No(N) values only!");
-                    Utilities.Wait();
-                    SaveGamePrompt();
-                    break;
-            }
-            Console.Clear();
-            return save;
+            //TODO: Show characters (filenames) and implement selection menu
+            // read the contents of the file and instantiate a Player object.
+            ShowCharacters();
+            return default;
         }
-        #endregion SAVE GAME
-
-        #region LOAD GAME 
-        //public static void LoadGame()
-        #endregion LOAD GAME 
 
         #region AUXILIARY METHODS
         public static void CreateFolder()
@@ -116,8 +117,8 @@ namespace SharpBattle
             {
                 Console.Clear();
                 System.Console.WriteLine("There are no save files, yet.");
-                Utilities.Wait();
-                Utilities.MainMenuPrompt();
+                Utilities.Wait(3);
+                Menus.MainMenuPrompt();
             }
         }
         private static Boolean IsFolderCreated(){return Directory.Exists("SaveData");}
