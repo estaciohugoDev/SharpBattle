@@ -3,23 +3,20 @@ using SharpBattle.Entities.Enums;
 using System.Collections.Generic;
 using SharpBattle.Entities;
 using SharpBattle.Util;
+using Spectre.Console;
 
 namespace SharpBattle
-{ 
+{
     public class Player : BaseEntity
     {
-        #region PROPERTIES/CTOR
-        public FightingStances Stances { get ; private set; }
         public bool IsTurn = true;
-        public Player() { CreatePlayer();}
-        #endregion
+        public Player() { CreatePlayer(); }
 
-        #region METHODS
         private void PlayerActions(Enemy target)
         {
             //TODO: 1) Implement option to Run from battle.
             //      2) Implement option to talk to targets.  
-            
+
             var action = Menus.PlayerActions();
             switch (action)
             {
@@ -38,7 +35,7 @@ namespace SharpBattle
                     target.IsTurn = true;
                     break;
                 case 3:
-                    SwitchStance();
+                    ChooseStance();
                     Utilities.Wait();
                     Console.Clear();
                     IsTurn = false;
@@ -74,77 +71,72 @@ namespace SharpBattle
         }
         private Player CreatePlayer()
         {
-            Console.Write("\nPlayer name: ");
             try
             {
-                Name = Console.ReadLine().ToString();
+                Name = AnsiConsole.Ask<string>("\nPlayer [green]name: [/]");
+                AnsiConsole.MarkupLine($"Welcome, [blue]{Name}[/]!");
+                Utilities.Wait(5);
                 BaseClass.SelectClass(this);
                 return default;
             }
             catch (FormatException e)
             {
-                Console.WriteLine($"Invalid input: {e.Message}");
+                AnsiConsole.MarkupLine($"Invalid input: [red]{e.Message}[/]");
                 Utilities.Wait();
                 CreatePlayer();
                 return default;
             }
         }
-        private void SwitchStance()
+        private void ChooseStance()
         {
-            Console.Clear();
-            Console.WriteLine(
+            AnsiConsole.Clear();
+            AnsiConsole.MarkupLine(
                 "Choose one of the following: \n" +
-                "1 - Aggressive (+DMG) \n" +
-                "2 - Defensive (+DEF) \n");
-            Console.Write("Switching to: ");
-            int choice = int.Parse(Console.ReadLine());
+                "1 - Neutral \n" +
+                "2 - Attacking (+STR) \n" +
+                "3 - Defending (+DEF) \n");
+            int choice = AnsiConsole.Ask<int>("Switching to: ");
 
             try
             {
-                switch (choice)
-                { 
-                    case 1:
-                        Stances = (FightingStances)choice;
-                        DMG *= (int)1.1;
-                        Console.WriteLine($"{Name} changed stance to: {Stances}");
-                        break;
+                SwitchStance((FightingStances)choice);
+                AnsiConsole.MarkupLine($"[green]{Name} changed stance to: {Stance}[/]");
 
-                    case 2:
-                        Stances = (FightingStances)choice;
-                        DEF *= (int)1.2;
-                        Console.WriteLine($"{Name} changed stance to: {Stances}");
-                        break;
+                if(choice < 1 || choice > 3)
+                {
+                    AnsiConsole.MarkupLine($"[red]Please enter a value between 1 and 3.[/]");
+                    Utilities.Wait();
+                    ChooseStance();
 
-                    default:
-                        Console.WriteLine("1 - 2 ONLY!");
-                        Utilities.Wait();
-                        SwitchStance();
-                        break;
                 }
             }
             catch (FormatException e)
             {
-                Console.WriteLine($"Invalid input: {e.Message}");
+                AnsiConsole.MarkupLine($"[red]Invalid input: {e.Message}[/]");
                 Utilities.Wait();
-                SwitchStance();
+                ChooseStance();
             }
         }
-        
-        #endregion 
-        #region AUXILIARY METHODS
-        private void Scan(Enemy enemy)
+
+        private void Scan(BaseEntity target)
         {
-            Console.WriteLine($"{Name} scans {enemy.Name}!");
-            Console.WriteLine(enemy.EnemyInfo());
+            Console.Clear();
+            AnsiConsole.MarkupLine($"[green]{Name}[/] scans [red]{target.Name}![/]");
+            AnsiConsole.MarkupLine(target.EntityInfo());
         }
-        public static List<string> PlayerInfo (Player player)
+
+        public static void TargetFound(Player player, BaseEntity target)
+        {
+            AnsiConsole.MarkupLine($"[green]{player.Name}[/] finds a [red]{target.Name}![/]");
+        }
+
+        public static List<string> PlayerInfo(Player player)
         {
             return
             [
                 player.Name,
                 player.Class.GetType().Name,
                 player.HP.ToString(),
-                player.DMG.ToString(),
                 player.DEF.ToString(),
                 player.MAG.ToString(),
                 player.HLY.ToString(),
@@ -154,9 +146,8 @@ namespace SharpBattle
         private string PlayerSheet()
         {
             return "\n - - - - - - - - - - - - - - - - - - -\n" +
-            $"           CHARACTER INFO \n\nName: {Name}\nClass: {Class.Name}\nHP: {HP:F2}\nStance: {Stances}\n"
+            $"           CHARACTER INFO \n\nName: {Name}\nClass: {Class.Name}\nHP: {HP:F2}\nStance: {Stance.ToString()}\n"
             + "\n - - - - - - - - - - - - - - - - - - -\n";
         }
-        #endregion
     }
 }

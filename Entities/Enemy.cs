@@ -11,14 +11,12 @@ namespace SharpBattle
         public bool IsTurn;
         public Enemy()
         {
-            string[] enemList = { "Thief", "Furry", "Bandit", "Slime", "Skeleton", "Wolf", "Troll" };
+            string[] enemList = { "Bandit", "Slime", "Skeleton", "Wolf", "Orc" };
             int randomName = Roll.Next(enemList.Length);
             STR = Roll.Next(1,5);
             DEF = Roll.Next(1,5);
             Name = enemList[randomName];
         }
-
-        #region METHODS 
 
         public void Actions(Player player)
         {
@@ -42,34 +40,10 @@ namespace SharpBattle
                     break;
             }
         }
-        private double Attack(Player player)
-        {
-            if (player.HP <= 0)
-            {
-                Console.WriteLine($"{Name} beat {player.Name}!");
-                return 0;
-            }
 
-            DMG = Roll.Next(1,STR);
-            player.TakeDamage(DMG);
-            Console.WriteLine($"{Name} attacks {player.Name} causing {DMG} damage!");
-            return DMG;
-        }
-
-        #endregion METHODS 
-
-        #region AUXILIARY METHODS
         public static Enemy NewEnemy()
         {
             return new Enemy();
         }
-        public string EnemyInfo()
-        {
-            return "\n - - - - - - - - - - - - - - - - - - -\n" +
-            $"           Enemy INFO \n\nName: {Name}\nHP: {HP:F2}"
-            + "\n - - - - - - - - - - - - - - - - - - -\n";
-        }
-
-        #endregion AUXILIARY METHODS
     }
 }

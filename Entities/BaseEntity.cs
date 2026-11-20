@@ -3,45 +3,70 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection.Metadata.Ecma335;
 using System.Threading.Tasks;
+using SharpBattle.Entities.Enums;
 using SharpBattle.Util;
 
 namespace SharpBattle.Entities
 {
-    public class BaseEntity : IBaseActions
+    public class BaseEntity : IBaseEntity
     {
-        public string Name {get; set;}
-        public int HP {get; private set;} = 10; 
-        public int DMG;
+        public string Name { get; set; }
+        public int HP { get; private set; } = 10;
         public int STR;
         public int DEF;
         public int MAG;
         public int HLY;
         public double LCK;
+        public FightingStances Stance { get; private set; } = FightingStances.Neutral;
+
         public BaseClass Class;
         public Random Roll { get; private set; }
+        public bool IsDead => HP <= 0;
+        public int RollDamage() => Roll.Next(1, STR + 1);
+        public void SwitchStance(FightingStances stance) => Stance = stance switch
+        {
+            FightingStances.Attacking => FightingStances.Attacking,
+            FightingStances.Defending => FightingStances.Defending,
+            FightingStances.Neutral => FightingStances.Neutral,
+            _ => Stance
+        };
+
         public BaseEntity()
         {
             Roll = new();
         }
-        public double Attack(BaseEntity target)
+        public int TakeDamage(int damage)
         {
-            DMG = Roll.Next(2, STR);
-            target.TakeDamage(DMG);
-            Console.WriteLine($"{Name} attacks {target.Name} causing {DMG} DMG!");
+            if(Stance == FightingStances.Defending)
+            {
+                damage = (int)(damage * 0.8);
+            }
+            var mitigated = Math.Max(0, damage - DEF);
+            HP = Math.Max(0, HP - mitigated);
+            return mitigated;
+        }
+        public int Attack(BaseEntity target)
+        {
+            if(Stance == FightingStances.Attacking)
+            {
+                STR = (int)(STR * 1.2);
+            }
+            var dmg = target.TakeDamage(RollDamage());
+            Console.WriteLine($"{Name} attacks {target.Name} causing {dmg} DMG!");
             if (target.HP <= 0)
             {
                 Console.WriteLine($"{Name} beat {target.Name}!");
                 return 0;
             }
-            return STR;
+            return dmg;
         }
 
-        public double Cast(BaseEntity target)
+        public int Cast(BaseEntity target)
         {
             throw new NotImplementedException();
         }
 
-        public double Guard()
+        public int Guard()
         {
             throw new NotImplementedException();
         }
@@ -49,23 +74,34 @@ namespace SharpBattle.Entities
         {
             throw new NotImplementedException();
         }
-        public void TakeDamage(int damage)
+        
+
+        public void OverrideEntityStats(BaseClass param)
         {
-            HP -= damage - DEF;
+            HP = param.HP;
+            STR = param.STR;
+            DEF = param.DEF;
+            MAG = param.MAG;
+            HLY = param.HLY;
+            LCK = param.LCK;
         }
 
-        public void OverrideEntityStats(BaseClass obj)
+        public void ResetEntityStats()
         {
-            HP = obj.HP;
-            STR = obj.STR;
-            DEF = obj.DEF;
-            MAG = obj.MAG;
-            HLY = obj.HLY;
-            LCK = obj.LCK;
+            HP = 10;
+            STR = 1;
+            DEF = 1;
+            MAG = 1;
+            HLY = 1;
+            LCK = 0.5;
         }
-        public string GetEntityName()
+
+        public string EntityInfo()
         {
-            return Name;
+            return "\n - - - - - - - - - - - - - - - - - - -\n" +
+            $"           INFO \n\nName: {Name}\nHP: {HP:F2}"
+            + "\n - - - - - - - - - - - - - - - - - - -\n";
         }
+
     }
 }

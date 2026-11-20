@@ -76,11 +76,10 @@ namespace SharpBattle
         {
             //TODO: Show characters (filenames) and implement selection menu
             // read the contents of the file and instantiate a Player object.
-            ShowCharacters();
+            ShowSaves();
             return default;
         }
 
-        #region AUXILIARY METHODS
         public static void CreateFolder()
         {
             try
@@ -93,9 +92,9 @@ namespace SharpBattle
             }
         }
 
-        public static void ShowCharacters()
+        public static void ShowSaves()
         {
-            if(IsFolderCreated())
+            if (IsFolderCreated())
             {
                 DirectoryInfo folder = new(folderName);
                 string[] files = new string[folder.GetFiles().Length];
@@ -121,9 +120,8 @@ namespace SharpBattle
                 Menus.MainMenuPrompt();
             }
         }
-        private static Boolean IsFolderCreated(){return Directory.Exists("SaveData");}
-        private static Boolean CheckForFile(){return File.Exists(FileName);}
-        #endregion AUXILIARY METHODS
+        private static bool IsFolderCreated() { return Directory.Exists("SaveData"); }
+        private static bool CheckForFile() { return File.Exists(FileName); }
 
     }
 }

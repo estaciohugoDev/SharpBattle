@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Threading;
 using Microsoft.VisualBasic;
 using SharpBattle.Entities;
@@ -7,40 +8,7 @@ namespace SharpBattle.Util
 {
     public class Utilities
     {
-        public static bool loop = true;
-
-        #region MAIN FIGHT LOOP
-        public static void FightLoop(Player player, Enemy enemy)
-        {
-            while (loop)
-            {
-                //Wait for player input
-                if (player.HP > 0)
-                    player.Actions(enemy);
-                else
-                {
-                    System.Console.WriteLine($"{player.Name} DIED! - GAME OVER");
-                    Menus.GameOverScreen();
-                    break;
-                }
-                //Get randomized enemy action
-                if (enemy.HP > 0)
-                    enemy.Actions(player);
-                else
-                {
-                    Console.WriteLine("---- HERE COMES A NEW CHALLENGER ----");
-                    player.IsTurn = true;
-                    enemy = Enemy.NewEnemy();
-                    TargetFound(player,enemy);
-                    Console.WriteLine(enemy.EnemyInfo());
-                    Wait();
-                    FightLoop(player, enemy);
-                }
-            }
-            // return;
-        }
-        #endregion MAIN FIGHT LOOP
-        public static void Wait(int seconds = 3)
+        public static void Wait(int seconds = 5)
         {
             for (var i = 0; i <= seconds; i++)
             {
@@ -48,9 +16,42 @@ namespace SharpBattle.Util
                 Thread.Sleep(seconds * 100);
             }
         }
-        public static void TargetFound(Player player ,BaseEntity target)
+
+        public static void CheckMissingDependencies()
         {
-            Console.WriteLine($"{player.Name} finds a {target.Name}.");
+            List<string> missingDependencies = new();
+
+            if (!IsSpectreConsoleAvailable()) 
+            {
+                missingDependencies.Add("Spectre.Console");
+            }
+
+            if (missingDependencies.Count > 0)
+            {
+                Console.WriteLine("The following dependencies are missing:");
+                foreach (var dependency in missingDependencies)
+                {
+                    Console.WriteLine($"- {dependency}");
+                }
+                Console.WriteLine("Please install the missing dependencies and restart the game.");
+                Console.WriteLine("Press any key to exit...");
+                Console.ReadKey();
+                Environment.Exit(0);
+            }
+        }
+
+        private static bool IsSpectreConsoleAvailable()
+        {
+            try
+            {
+                // Attempt to use a Spectre.Console feature to check if it's available
+                var test = new Spectre.Console.Markup("[green]Test[/]");
+                return true;
+            }
+            catch
+            {
+                return false;
+            }
         }
     }
 }

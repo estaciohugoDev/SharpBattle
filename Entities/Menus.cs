@@ -5,6 +5,7 @@ using System.Net;
 using System.Threading.Tasks;
 using Microsoft.VisualBasic;
 using SharpBattle.Util;
+using Spectre.Console;
 
 namespace SharpBattle.Entities
 {
@@ -13,24 +14,32 @@ namespace SharpBattle.Entities
         public static void MainMenuPrompt()
         {
             Console.Clear();
-            System.Console.WriteLine("----------- < SHARPBATTLE >\n" +
-            "1 ------> New Game\n" +
-            "2 ----> Load Game\n" +
-            "3 ---> Quit\n\n");
-            System.Console.Write("Choice: ");
-            int choice = int.Parse(Console.ReadLine());
-            switch (choice)
+
+            var menuChoice = AnsiConsole.Prompt(
+                new SelectionPrompt<string>()
+                    .Title("[cyan]Welcome to SharpBattle![/] "
+                    + "\n[green]Please select an option:[/]")
+                    .AddChoices
+                    (
+                        "New Game",
+                        "Load Game",
+                        "Quit"
+                    ));
+
+            switch (menuChoice)
             {
-                case 1:
-                    GameStart.Start(new Player());
+                case "New Game":
+                    Game.Start(new Player());
                     break;
-                case 2:
-                    GameStart.Start(SaveLoadGame.LoadGame());
+                case "Load Game":
+                    Game.Start(SaveLoadGame.LoadGame());
                     break;
-                case 3:
+                case "Quit":
                     System.Environment.Exit(0); //Kills game.
                     break;
                 default:
+                    System.Console.WriteLine("Please enter a valid option!");
+                    Utilities.Wait(3);
                     MainMenuPrompt();
                     break;
             }
@@ -67,7 +76,7 @@ namespace SharpBattle.Entities
         }
         public static int PlayerActions()
         {
-            Console.WriteLine( 
+            Console.WriteLine(
             "----> Actions <----\n " +
                 "1 - Attack!\n " +
                 "2 - Scan!\n " +

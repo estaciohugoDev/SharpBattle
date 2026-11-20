@@ -5,12 +5,12 @@ using System.Threading.Tasks;
 
 namespace SharpBattle.Entities
 {
-    public interface IBaseActions
+    public interface IBaseEntity
     {
-        double Attack(BaseEntity target);
-        double Guard();
-        double Cast(BaseEntity target);
+        int Attack(BaseEntity target);
+        int Guard();
+        int Cast(BaseEntity target);
         void Use(); //TODO: use an item from Inventory
-        void TakeDamage (int damage);
+        int TakeDamage (int damage);
     }
 }

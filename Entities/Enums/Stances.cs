@@ -2,9 +2,10 @@
 {
     public enum FightingStances
     {
-        Aggressive = 1, //DMG
-        Defensive = 2, //DEF
-        Caster = 3, //MAG
-        Prayer = 4 //HLY
+        Neutral = 1,
+        Attacking = 2, //STR
+        Defending = 3, //DEF
+        Casting = 4, //MAG
+        Praying = 5 //HLY
     }
 }

@@ -16,12 +16,11 @@ namespace SharpBattle
             HLY *= 1;
             Name = "Knight";
         }
-        #region CLASS SKILLS
         public static double CrossSlash(Player player, BaseEntity target)
         {
-            var skillDamage = player.DMG + player.Roll.Next(10, 50);
-            target.TakeDamage(skillDamage);
-            System.Console.WriteLine($"{player.Name} casts Cross Slash, {target.Name} receives {skillDamage} damage!");
+            var skillDamage = player.STR + player.RollDamage();
+            var actualDamage = target.TakeDamage(skillDamage);
+            System.Console.WriteLine($"{player.Name} casts Cross Slash, {target.Name} receives {actualDamage} damage!");
             if (target.HP <= 0)
             {
                 Console.WriteLine($"{player.Name} defeated {target.Name}!");
@@ -29,9 +28,7 @@ namespace SharpBattle
             }
             return skillDamage;
         }
-        #endregion CLASS SKILLS
 
-        #region AUXILIARY METHODS
         public void ListSkills()
         {
             Console.Clear();
@@ -58,6 +55,5 @@ namespace SharpBattle
                     break;
             }
         }
-        #endregion AUXILIARY METHODS
     }
 }
